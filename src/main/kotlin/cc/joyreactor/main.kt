@@ -1,3 +1,5 @@
+package cc.joyreactor
+
 import cc.joyreactor.core.Parsers
 import cc.joyreactor.core.Posts
 import com.google.gson.Gson
