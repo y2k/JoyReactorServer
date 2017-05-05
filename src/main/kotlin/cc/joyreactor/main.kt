@@ -1,7 +1,6 @@
 package cc.joyreactor
 
-import cc.joyreactor.core.Parsers
-import cc.joyreactor.core.Posts
+import cc.joyreactor.core.*
 import com.google.gson.Gson
 import org.jsoup.Jsoup
 import spark.Spark.post
@@ -13,6 +12,12 @@ fun main(args: Array<String>) {
         val html = request.raw().getPart("html").inputStream.bufferedReader().readText()
         Domain.parse(html)
     }, Gson()::toJson)
+
+    post("/post", { request, _ ->
+        request.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement("/temp"))
+        val html = request.raw().getPart("html").inputStream.bufferedReader().readText()
+        Domain.parsePostWithTopComments(html)
+    }, Gson()::toJson)
 }
 
 object Domain {
@@ -23,5 +28,11 @@ object Domain {
                 Posts(
                     Parsers.parsePostsForTag(doc),
                     Parsers.parseNewPageNumber(doc))
+            }
+
+    fun parsePostWithTopComments(html: String): Post =
+        Jsoup.parse(html)
+            .let { doc ->
+                JoyReactor.postWithComments(doc, TopComments(10))
             }
 }

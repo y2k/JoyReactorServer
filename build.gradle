@@ -26,5 +26,5 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile 'com.sparkjava:spark-core:2.5.5'
     compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.github.y2k:JoyReactorCore:af4b3a048a'
+    compile 'com.github.y2k:JoyReactorCore:809bf9e966'
 }
