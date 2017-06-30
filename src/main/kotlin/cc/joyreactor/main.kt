@@ -8,11 +8,13 @@ import spark.Spark.post
 import java.io.InputStream
 import java.lang.System.getProperty
 import javax.servlet.MultipartConfigElement
+import cc.joyreactor.core.Parsers as P
 
 fun main(args: Array<String>) {
     mutlipart("/posts") { Domain.getPostsWithNext(it) }
     mutlipart("/post") { Domain.getPostWithTopComments(it) }
     mutlipart("/profile") { Domain.getProfile(it) }
+    mutlipart("/tags") { Domain.userTags(it) }
 }
 
 fun mutlipart(path: String, handler: (InputStream) -> Any) {
@@ -24,18 +26,21 @@ fun mutlipart(path: String, handler: (InputStream) -> Any) {
 
 object Domain {
 
+    fun userTags(stream: InputStream): List<Tag> =
+        stream.html().let(P::readingTags)
+
     fun getProfile(stream: InputStream): Profile =
-        Parsers.profile(stream.html())
+        P.profile(stream.html())
 
     fun getPostsWithNext(stream: InputStream): Posts =
         stream.html().let { doc ->
             Posts(
-                Parsers.parsePostsForTag(doc),
-                Parsers.parseNewPageNumber(doc))
+                P.parsePostsForTag(doc),
+                P.parseNewPageNumber(doc))
         }
 
     fun getPostWithTopComments(stream: InputStream): Post =
-        postWithComments(stream.html(), TopComments(10))
+        postWithComments(stream.html(), TopComments(20))
 
     private fun InputStream.html() = Jsoup.parse(bufferedReader().readText())
 }
