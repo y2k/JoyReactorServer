@@ -17,13 +17,6 @@ fun main(args: Array<String>) {
     mutlipart("/tags", Domain::userTags)
 }
 
-fun mutlipart(path: String, handler: (InputStream) -> Any) {
-    post(path, { request, _ ->
-        request.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement(getProperty("java.io.tmpdir")))
-        request.raw().getPart("html").inputStream.use { handler(it) }
-    }, Gson()::toJson)
-}
-
 object Domain {
 
     fun userTags(stream: InputStream): List<Tag> =
@@ -43,4 +36,11 @@ object Domain {
         postWithComments(stream.html(), TopComments(20))
 
     private fun InputStream.html() = Jsoup.parse(bufferedReader().readText())
+}
+
+fun mutlipart(path: String, handler: (InputStream) -> Any) {
+    post(path, { request, _ ->
+        request.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement(getProperty("java.io.tmpdir")))
+        request.raw().getPart("html").inputStream.use { handler(it) }
+    }, Gson()::toJson)
 }
