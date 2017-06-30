@@ -11,10 +11,10 @@ import javax.servlet.MultipartConfigElement
 import cc.joyreactor.core.Parsers as P
 
 fun main(args: Array<String>) {
-    mutlipart("/posts") { Domain.getPostsWithNext(it) }
-    mutlipart("/post") { Domain.getPostWithTopComments(it) }
-    mutlipart("/profile") { Domain.getProfile(it) }
-    mutlipart("/tags") { Domain.userTags(it) }
+    mutlipart("/posts", Domain::getPostsWithNext)
+    mutlipart("/post", Domain::getPostWithTopComments)
+    mutlipart("/profile", Domain::getProfile)
+    mutlipart("/tags", Domain::userTags)
 }
 
 fun mutlipart(path: String, handler: (InputStream) -> Any) {
@@ -30,7 +30,7 @@ object Domain {
         stream.html().let(P::readingTags)
 
     fun getProfile(stream: InputStream): Profile =
-        P.profile(stream.html())
+        stream.html().let(P::profile)
 
     fun getPostsWithNext(stream: InputStream): Posts =
         stream.html().let { doc ->
