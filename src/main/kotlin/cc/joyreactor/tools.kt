@@ -11,7 +11,8 @@ import javax.servlet.MultipartConfigElement
  * Created by y2k on 01/07/2017.
  **/
 
-fun InputStream.html(): Document = Jsoup.parse(bufferedReader().readText())
+fun InputStream.html(): Document =
+    Jsoup.parse(this, null, "")
 
 fun mutlipart(path: String, handler: (InputStream) -> Any) {
     Spark.post(path, { request, _ ->

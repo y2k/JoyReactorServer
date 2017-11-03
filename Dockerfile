@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8u131-jdk-alpine
 
 EXPOSE 4567
 
