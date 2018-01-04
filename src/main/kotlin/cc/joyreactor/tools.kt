@@ -14,6 +14,9 @@ import javax.servlet.MultipartConfigElement
 fun InputStream.html(): Document =
     Jsoup.parse(this, null, "")
 
+fun multipartDocument(path: String, f: (Document) -> Any) =
+    mutlipart(path) { stream -> stream.html().let(f) }
+
 fun mutlipart(path: String, handler: (InputStream) -> Any) {
     Spark.post(path, { request, _ ->
         request.attribute("org.eclipse.jetty.multipartConfig", MultipartConfigElement(System.getProperty("java.io.tmpdir")))

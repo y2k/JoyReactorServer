@@ -2,7 +2,7 @@ group 'cc.joyreactor'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.2.10'
 
     repositories {
         mavenCentral()
@@ -15,7 +15,7 @@ buildscript {
 apply plugin: 'application'
 apply plugin: 'kotlin'
 
-mainClassName = "cc.joyreactor.MainKt"
+mainClassName = "cc.joyreactor.Application"
 
 repositories {
     mavenCentral()
@@ -26,6 +26,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile 'com.sparkjava:spark-core:2.5.5'
     compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.github.y2k:JoyReactorCore:3f23f4ff78'
+    compile 'com.github.y2k:JoyReactorCore:40aba9821a'
     compile 'org.slf4j:slf4j-simple:1.7.25'
 }
