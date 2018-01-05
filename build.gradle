@@ -15,7 +15,7 @@ buildscript {
 apply plugin: 'application'
 apply plugin: 'kotlin'
 
-mainClassName = "cc.joyreactor.Application"
+mainClassName = 'cc.joyreactor.MainKt'
 
 repositories {
     mavenCentral()
@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    compile 'com.sparkjava:spark-core:2.5.5'
+    compile 'com.sparkjava:spark-core:2.7.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.github.y2k:JoyReactorCore:40aba9821a'
     compile 'org.slf4j:slf4j-simple:1.7.25'
