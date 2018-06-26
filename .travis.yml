@@ -18,4 +18,4 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
-  script: ssh -o "StrictHostKeyChecking=no" -i deployment_key.txt $DEPLOY_AUTHORITY "docker pull $DOCKER_ID && docker rm -f $DOCKER_NAME || true && docker run --name $DOCKER_NAME -d -p 4567:4567 $DOCKER_ID"
+  script: ssh -o "StrictHostKeyChecking=no" $DEPLOY_AUTHORITY "docker pull $DOCKER_ID && docker rm -f $DOCKER_NAME || true && docker run --name $DOCKER_NAME -d -p 4567:4567 $DOCKER_ID"
