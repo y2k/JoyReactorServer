@@ -1,21 +1,23 @@
 sudo: required
-dist: trusty  
+dist: trusty
 services:
-  - docker
+- docker
 env:
   global:
-    - DOCKER_NAME=joyreactor_server
-    - DOCKER_ID=y2khub/joyreactor_server
+  - DOCKER_NAME=joyreactor_server
+  - DOCKER_ID=y2khub/joyreactor_server
 before_install:
-  - sudo apt-get update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-  - openssl aes-256-cbc -K $encrypted_ea8b612642af_key -iv $encrypted_ea8b612642af_iv -in deployment_key.txt.enc -out deployment_key.txt -d
-  - chmod 600 deployment_key.txt
+ - openssl aes-256-cbc -K $encrypted_f4fbdec7f459_key -iv $encrypted_f4fbdec7f459_iv -in id_rsa.enc -out ~/.ssh/id_rsa -d
+ - chmod 400 ~/.ssh/id_rsa
+ - sudo apt-get update
+ - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 script:
-  - docker build --rm -f Dockerfile -t $DOCKER_ID .
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push $DOCKER_ID
+ - docker build --rm -f Dockerfile -t $DOCKER_ID .
+ - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+ - docker push $DOCKER_ID
 deploy:
   provider: script
   skip_cleanup: true
-  script: ssh -o "StrictHostKeyChecking=no" -i deployment_key.txt $DEPLOY_AUTHORITY "docker pull $DOCKER_ID && docker rm -f $DOCKER_NAME || true && docker run --name $DOCKER_NAME -d -p 4567:4567 $DOCKER_ID"
+  script: ssh -o "StrictHostKeyChecking=no" $DEPLOY_AUTHORITY "docker pull $DOCKER_ID
+    && docker rm -f $DOCKER_NAME || true && docker run --name $DOCKER_NAME -d -p 4567:4567
+    $DOCKER_ID"
