@@ -15,7 +15,7 @@ buildscript {
 apply plugin: 'application'
 apply plugin: 'kotlin'
 
-mainClassName = 'cc.joyreactor.MainKt'
+mainClassName = 'cc.joyreactor.UndertowKt'
 
 repositories {
     mavenCentral()
@@ -25,7 +25,10 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile 'com.sparkjava:spark-core:2.7.2'
-    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.code.gson:gson:2.8.5'
     compile 'com.github.y2k:JoyReactorCore:32976c697b'
     compile 'org.slf4j:slf4j-simple:1.7.25'
+
+    compile 'io.undertow:undertow-core:2.0.10.Final'
+
 }
