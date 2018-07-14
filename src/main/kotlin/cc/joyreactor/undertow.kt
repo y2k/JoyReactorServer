@@ -6,13 +6,12 @@ import com.google.gson.Gson
 import io.undertow.Handlers
 import io.undertow.Undertow
 import io.undertow.server.RoutingHandler
-import io.undertow.server.handlers.form.EagerFormParsingHandler
-import io.undertow.server.handlers.form.FormDataParser
-import io.undertow.server.handlers.form.FormParserFactory
-import io.undertow.server.handlers.form.MultiPartParserDefinition
+import io.undertow.server.handlers.form.*
 import io.undertow.util.Headers
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 import java.util.*
 import cc.joyreactor.core.Parsers as P
 
@@ -56,10 +55,14 @@ private fun RoutingHandler.service(path: String, function: (Document) -> Any): R
                 val json = exchange
                     .getAttachment(FormDataParser.FORM_DATA)
                     .get("html")
-                    .first.path.toFile()
-                    .inputStream().use { Jsoup.parse(it, null, "") }
+                    .first
+                    .toStream().use { Jsoup.parse(it, null, "") }
                     .let(function)
                     .let(Gson()::toJson)
                 exchange.responseHeaders.put(Headers.CONTENT_TYPE, "application/json")
                 exchange.responseSender.send(json)
             })
+
+private fun FormData.FormValue.toStream(): InputStream =
+    if (isFile) path.toFile().inputStream()
+    else ByteArrayInputStream(value.toByteArray())
