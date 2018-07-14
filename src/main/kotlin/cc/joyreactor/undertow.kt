@@ -19,7 +19,7 @@ import cc.joyreactor.core.Parsers as P
 fun main(args: Array<String>) =
     Undertow
         .builder()
-        .addHttpListener(4567, "localhost")
+        .addHttpListener(4567, "0.0.0.0")
         .setHandler(Handlers.routing()
             .get("/info") { it.responseSender.send("JoyReactor Parser (undertow) - ${Date()}") }
             .apply {
