@@ -40,8 +40,7 @@ fun main(args: Array<String>) =
                                 "nextPage" to nextPage)
                         }
                 }
-            }
-        )
+            })
         .build()
         .start()
 
@@ -49,6 +48,7 @@ private fun RoutingHandler.service(path: String, function: (Document) -> Any): R
     post(path,
         EagerFormParsingHandler(
             FormParserFactory.builder()
+                .apply { defaultCharset = "UTF-8" }
                 .addParsers(MultiPartParserDefinition())
                 .build())
             .setNext { exchange ->
