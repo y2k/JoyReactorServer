@@ -2,7 +2,7 @@
 # Build stage
 # ###############################
 
-FROM openjdk:8u131-jdk-alpine
+FROM openjdk:10.0.2-jdk-slim
 
 WORKDIR /build-app
 COPY . /build-app
@@ -12,7 +12,7 @@ RUN ./gradlew --no-daemon installDist
 # Deploy stage
 # ###############################
 
-FROM openjdk:8u131-jre-alpine
+FROM openjdk:10.0.2-jre-slim
 
 EXPOSE 4567
 
